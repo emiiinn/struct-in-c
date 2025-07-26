@@ -94,7 +94,7 @@ void liststudents(){
         printf("GPA: %.2f\n",students[i].GPA);
         printf("year: %d\n",students[i].year);
     }
-    print("\n");
+    printf("\n");
 
 }
 
