@@ -1,0 +1,139 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<stdbool.h>
+#include<string.h>
+
+typedef struct{
+    char name[50];
+    int ID;
+    char major[30];
+    float GPA;
+    int year;
+}Student;
+
+Student *students= NULL;
+int studentcount = 0;
+
+void addstudent(int n){
+
+    students= realloc(students,(studentcount+n) * sizeof(Student));
+
+    if(students== NULL){
+        printf("memory allocation has failled");
+    }
+    else{
+    for(int i= studentcount; i< studentcount+ n; i++){
+
+        fflush(stdin);
+        printf("enter the student %ds name: ",i+1);
+        fgets(students[i].name, sizeof(students[0].name),stdin);
+        students[i].name[strcspn(students[i].name,"\n")]='\0';
+        
+
+        printf("enter the student %ds major: ",i+1);
+        fgets(students[i].major, sizeof(students[0].major),stdin);
+        students[i].major[strcspn(students[i].major,"\n")]='\0';
+
+        printf("enter the student %ds GPA: ",i+1);
+        scanf("%f",&students[i].GPA);
+
+        printf("enter the student %ds ID: ",i+1);
+        scanf("%d",&students[i].ID);
+
+        printf("enter the student %ds year: ",i+1);
+        scanf("%d",&students[i].year);
+
+        printf("student has been successfuly added\n");
+    }
+    studentcount+=n;
+    printf("students succesfully aded...\n\n");
+        }
+
+    return ;
+}
+
+void deletestudent(int id){
+
+    bool isfound= false;
+
+    for(int i=0; i<studentcount; i++){
+        
+        if(students[i].ID == id){
+            
+            isfound= true;
+
+            for(int j=i; j< studentcount -1; j++){
+
+                students[j]= students[j+1];
+            }
+            studentcount--;
+
+            students = realloc(students, studentcount * sizeof(Student));
+            printf("student with ID: %d has been deleted.\n\n",id);
+        }
+    }
+
+    if(!isfound){
+        printf("no student found with ID: %d\n\n",id);
+    }
+
+}
+
+void liststudents(){
+
+    if(studentcount==0){
+        printf("There are no students\n\n");
+    }
+
+    for(int i=0; i<studentcount;i++){
+    
+        printf("\nstudent %d\n",i+1);
+        printf("name: %s\n",students[i].name);
+        printf("ID: %d\n",students[i].ID);
+        printf("major: %s\n",students[i].major);
+        printf("GPA: %.2f\n",students[i].GPA);
+        printf("year: %d\n",students[i].year);
+    }
+    print("\n");
+
+}
+
+
+
+int main(){
+
+    int a,n,id;
+
+    while(1){
+        printf("what do you want to do\n"
+            "1-) add student\n"
+            "2-) delete a student\n"
+            "3-)list all of the students\n");
+
+        printf("your choice: ");
+            scanf("%d",&a);
+
+            switch(a){
+                case 1:
+                 printf("how many students do you want to add?\n");
+                 scanf("%d",&n);
+                 addstudent(n); 
+                 break;
+
+                case 2:
+                printf("please enter the id which belongs the student you want to delete: ");
+                scanf("%d",&id);
+                deletestudent(id);
+                break;
+
+                case 3: liststudents(); 
+                break;
+
+                default: printf("try again pls"); break;
+            }
+    }
+
+
+
+
+}
